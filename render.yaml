@@ -1,6 +1,8 @@
+# Demo deployment: serves the fictional organization, no Azure DevOps account needed.
+# For a real deployment use deploy/render.real.yaml instead (see README).
 services:
   - type: web
-    name: azure-dashboard
+    name: azure-devops-dashboard-demo
     env: docker
     plan: free
     healthCheckPath: /api/health
@@ -9,22 +11,5 @@ services:
         value: production
       - key: HOST
         value: 0.0.0.0
-      # Required. Everything else here is optional — see .env.example.
-      - key: ADO_ORG
-        sync: false
-      - key: APP_PASSWORD
-        sync: false
-      # Optional: preselects this project on the sign-in project step.
-      - key: ADO_PROJECT
-        sync: false
-      # Optional: shared read/polling token. Projects it can't read fall back to
-      # the token of whoever opened them.
-      - key: ADO_PAT
-        sync: false
-      # Set this explicitly here: the free plan has no persistent disk, so a
-      # generated secret would be thrown away on every deploy, signing everyone
-      # out.
-      - key: SESSION_SECRET
-        sync: false
-      - key: SESSION_TTL_HOURS
-        value: '720'
+      - key: DEMO_MODE
+        value: '1'

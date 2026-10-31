@@ -6,7 +6,6 @@ web/dist
 .env
 .env.*
 !.env.example
-deploy
 .git
 .impeccable
 *.md

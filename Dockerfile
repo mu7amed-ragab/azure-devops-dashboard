@@ -20,6 +20,8 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY server ./server
+# The demo-mode guard reads this file at startup.
+COPY deploy/azure-dashboard.xml ./deploy/azure-dashboard.xml
 COPY --from=build /app/web/dist ./web/dist
 
 EXPOSE 5174

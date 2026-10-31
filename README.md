@@ -107,7 +107,7 @@ Pull requests, hours and team pages need no extra setup. For team charts, create
 
 - **Docker:** the included `Dockerfile` builds the client at image-build time. Set `ADO_ORG`,
   `APP_PASSWORD` and `SESSION_SECRET` as environment variables and expose port 5174.
-- **Render:** `render.yaml` is a ready blueprint for the free tier.
+- **Render:** `render.yaml` deploys the **demo** (it sets `DEMO_MODE=1`, so it needs no Azure DevOps account). For a real deployment, use `deploy/render.real.yaml` and set `ADO_ORG`, `APP_PASSWORD` and `SESSION_SECRET` in the Render dashboard.
 - **Windows service / IIS:** the `deploy/` folder has a service definition, an update script and a
   `web.config` example. Edit the paths first.
 
