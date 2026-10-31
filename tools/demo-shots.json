@@ -1,0 +1,26 @@
+{
+  "shots": [
+    { "id": "login-password", "route": "/login", "as": null, "stage": "signed-out", "waitFor": "form" },
+    { "id": "login-token", "route": "/login", "as": null, "stage": "gate", "waitFor": "form" },
+    { "id": "login-project", "route": "/login", "as": null, "stage": "no-project", "waitFor": "input[name=\"project\"]" },
+    { "id": "dashboard", "route": "/", "as": "lead", "project": "Customer Experience Portal", "waitFor": "#main-content section", "fullPage": true },
+    { "id": "dashboard-hours-all-projects", "route": "/", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[role=\"tablist\"] [role=\"tab\"]", "actions": [{ "click": "[role=\"tablist\"] [role=\"tab\"]:last-child" }] },
+    { "id": "work-items", "route": "/work-items", "as": "lead", "project": "Customer Experience Portal", "waitFor": "main input[type=\"text\"]", "fullPage": true },
+    { "id": "work-items-search", "route": "/work-items", "as": "lead", "project": "Customer Experience Portal", "waitFor": "main input[type=\"text\"]", "actions": [{ "type": "main input[type=\"text\"]", "value": "onboarding" }] },
+    { "id": "pull-requests", "route": "/pull-requests", "as": "lead", "project": "Customer Experience Portal", "waitFor": "main a[href*=\"/pullrequest/\"]", "fullPage": true },
+    { "id": "team", "route": "/team", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[data-shot=\"manage-team\"]", "fullPage": true },
+    { "id": "team-member", "route": "/team", "as": "lead", "project": "Customer Experience Portal", "waitFor": "main [role=\"group\"] button[aria-expanded]", "actions": [{ "click": "main [role=\"group\"] button[aria-expanded]" }, { "click": "button[aria-pressed]:has-text(\"سارة الدوسري\")" }, { "click": "button[aria-pressed]:has-text(\"محمد العتيبي\")" }, { "press": "Escape" }, { "waitCount": ["main section.snap-x", 2] }], "fullPage": true },
+    { "id": "manage-team", "route": "/team", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[data-shot=\"manage-team\"]", "actions": [{ "click": "[data-shot=\"manage-team\"]" }, { "waitFor": "[role=\"dialog\"]" }] },
+    { "id": "scrum", "route": "/scrum", "as": "lead", "project": "Customer Experience Portal", "waitFor": "#main-content section", "fullPage": true },
+    { "id": "account-menu", "route": "/", "as": "lead", "project": "Customer Experience Portal", "waitFor": "header button[aria-haspopup=\"menu\"]", "actions": [{ "click": "header button[aria-haspopup=\"menu\"]" }, { "waitFor": "[role=\"menu\"]" }] },
+    { "id": "operations-dashboard", "route": "/", "as": "lead", "project": "Smart Operations Platform", "waitFor": "#main-content section", "fullPage": true },
+    { "id": "operations-scrum", "route": "/scrum", "as": "lead", "project": "Smart Operations Platform", "waitFor": "#main-content section", "fullPage": true },
+    { "id": "cloud-work-items", "route": "/work-items", "as": "lead", "project": "Enterprise Cloud Platform", "waitFor": "main input[type=\"text\"]", "fullPage": true },
+    { "id": "member-dashboard", "route": "/", "as": "member", "project": "Customer Experience Portal", "waitFor": "#main-content section", "fullPage": true },
+    { "id": "manage-team-detail", "route": "/team", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[data-shot=\"manage-team\"]", "actions": [{ "click": "[data-shot=\"manage-team\"]" }, { "waitFor": "[role=\"dialog\"]" }, { "click": "[id^=\"team-manage-\"]" }, { "waitFor": "[role=\"dialog\"] [role=\"tablist\"]" }] },
+    { "id": "manage-team-hierarchy", "route": "/team", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[data-shot=\"manage-team\"]", "actions": [{ "click": "[data-shot=\"manage-team\"]" }, { "waitFor": "[role=\"dialog\"]" }, { "click": "[id^=\"team-manage-\"]" }, { "waitFor": "[role=\"dialog\"] [role=\"tablist\"]" }, { "click": "[role=\"dialog\"] [role=\"tablist\"] button:nth-child(2)" }, { "waitFor": "[role=\"dialog\"] [role=\"tabpanel\"], [role=\"dialog\"] svg" }] },
+    { "id": "cumulative-progress", "route": "/work-items", "as": "lead", "project": "Customer Experience Portal", "waitFor": "main input[type=\"text\"]", "actions": [{ "click": "main [role=\"group\"] button[aria-expanded]" },{ "click": "button[aria-pressed]:has-text(\"Cumulative progress\"), button[aria-pressed]:has-text(\"التقدم التراكمي\")" },{ "press": "Escape" },{ "click": "input[type=\"checkbox\"][aria-label*=\"401473\"]" },{ "click": "input[type=\"checkbox\"][aria-label*=\"401225\"]" },{ "waitFor": "div.fixed.bottom-4" }] },
+    { "id": "all-projects-day-details", "route": "/", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[role=\"tablist\"] [role=\"tab\"]", "actions": [{ "click": "[role=\"tablist\"] [role=\"tab\"]:last-child" },{ "click": "section .mt-4.flex.items-end > button:nth-child(3)" },{ "waitFor": "section .bg-surface-sunken a[href]" }], "fullPage": true },
+    { "id": "dashboard-all-projects-cover", "route": "/", "as": "lead", "project": "Customer Experience Portal", "waitFor": "[role=\"tablist\"] [role=\"tab\"]", "actions": [{ "click": "[role=\"tablist\"] [role=\"tab\"]:last-child" }] }
+  ]
+}

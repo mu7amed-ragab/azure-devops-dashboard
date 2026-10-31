@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: 255 255 255;
+  --surface-raised: 250 250 251;
+  --surface-sunken: 244 244 246;
+  --border: 228 228 232;
+  --ink: 23 23 28;
+  --ink-muted: 100 100 112;
+  /* 148,148,160 measured 3.00:1 on white — below the 4.5:1 body-text floor,
+     and this token carries descriptions, dates and PR metadata. 4.81:1. */
+  --ink-subtle: 113 113 126;
+  --accent: 79 70 229;
+  --accent-hover: 67 56 202;
+
+  /* Status — text/icon. -700-equivalent depth: amber-700 (same value
+     StatTile already measured at 4.81:1 vs amber-600's 2.06:1), rose-700,
+     emerald-700, blue-700 — each clears the 4.5:1 body-text floor on both
+     surface and surface-raised. */
+  --success: 4 120 87;      --warning: 180 83 9;
+  --danger:  190 18 60;     --info:    29 78 216;
+  /* Status — surface tint (vivid mid-hue, used at /15 for pills/fills). */
+  --success-tint: 16 185 129;  --warning-tint: 245 158 11;
+  --danger-tint:  244 63 94;   --info-tint:    59 130 246;
+
+  /* Work item coding system — the Ledger's spine colors. Story blue, Task
+     amber, Bug rose, sprint header violet (kept apart from all three item
+     colors so a sprint section never reads as "a story" or "a task"). */
+  --type-story: 59 130 246;  --type-task: 217 119 6;
+  --type-bug:   244 63 94;   --type-sprint: 139 92 246;
+
+  /* Workflow stage hues — the mid-pipeline states between New and
+     Closed/Deployed (which use --info/--success instead). */
+  --stage-approved: 13 148 136; --stage-review: 124 58 237;
+  --stage-staging:  147 51 234; --stage-intake: 8 145 178;
+
+  --chart-surface: #fcfcfb;
+  --chart-series-1: #2a78d6;
+  --chart-series-2: #eb6834;
+  --chart-grid: #e1e0d9;
+  --chart-axis: #c3c2b7;
+  --chart-muted: #898781;
+  --chart-good: #0ca30c;
+  --chart-critical: #d03b3b;
+
+  color-scheme: light;
+}
+
+/* .login-night shares the .dark block verbatim — the login screen is
+   always dark (see DESIGN.md "The Threshold Exception"), so it reuses the
+   already-contrast-checked dark tokens instead of a second, unaudited set. */
+.dark, .login-night {
+  --surface: 17 17 22;
+  --surface-raised: 24 24 30;
+  --surface-sunken: 12 12 16;
+  --border: 40 40 48;
+  --ink: 237 237 242;
+  --ink-muted: 168 168 180;
+  /* 110,110,124 measured 3.52:1 on the raised surface — dark mode fails the
+     same floor independently of light mode. 5.32:1. */
+  --ink-subtle: 140 140 153;
+  --accent: 129 140 248;
+  --accent-hover: 165 180 252;
+
+  /* Status — text/icon, dark-mode -400 shades (matching StateChip's
+     already-audited dark pattern — comfortably above 4.5:1 at 5.5-9.1:1). */
+  --success: 52 211 153;   --warning: 251 191 36;
+  --danger:  251 113 133;  --info:    96 165 250;
+  /* Tints unchanged from light mode — a 15% fill reads correctly in both
+     themes, so only the text-bearing tokens above need a dark variant. */
+  --success-tint: 16 185 129;  --warning-tint: 245 158 11;
+  --danger-tint:  244 63 94;   --info-tint:    59 130 246;
+
+  /* Task swaps to amber-500 in dark mode: amber-500 measures 8.76:1 on the
+     dark surface vs. amber-700's 3.19:1-in-light-only intent — the light
+     shade would be needlessly muddy against a dark background. */
+  --type-story: 59 130 246;  --type-task: 245 158 11;
+  --type-bug:   244 63 94;   --type-sprint: 167 139 250;
+
+  --stage-approved: 45 212 191; --stage-review: 167 139 250;
+  --stage-staging:  192 132 252; --stage-intake: 34 211 238;
+
+  --chart-surface: #1a1a19;
+  --chart-series-1: #3987e5;
+  --chart-series-2: #d95926;
+  --chart-grid: #2c2c2a;
+  --chart-axis: #383835;
+  --chart-muted: #898781;
+  --chart-good: #0ca30c;
+  --chart-critical: #e66767;
+
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-surface text-ink antialiased;
+}
+
+/* Arabic ascenders/descenders need more vertical room than Latin at the same size */
+[lang="ar"] {
+  line-height: 1.7;
+}
+
+* {
+  @apply border-border;
+}
+
+/* Shared focus-visible ring — keyboard-only (mouse clicks stay ring-free),
+   used across nav links, buttons, and inputs instead of each one inventing
+   its own outline treatment. ring-offset-surface keeps the ring legible on
+   every surface tone in both themes. */
+.focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+}
+
+/* Visually hidden until focused — the skip-link pattern. */
+.sr-only-focusable {
+  @apply absolute -top-full left-4 z-skip rounded-md bg-accent px-3 py-2 text-xs font-medium text-white transition-[top] focus-visible:top-2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Ambient Canopy — purely decorative, app-wide background (AmbientSky.tsx).
+   See DESIGN.md "The Ambient Canopy" for why this is allowed to break The
+   Coding Rule everywhere, and the bounds that keep it from competing with
+   the data: existing tokens only, transform/opacity-only motion, and a
+   scrim + translucent-but-measured content pane so published contrast
+   ratios still hold against the actual text.
+   ------------------------------------------------------------------- */
+
+/* Two tiled star fields (CSS-only, no per-star DOM nodes) give background
+   texture; a handful of real elements on top (see NightSky.tsx) twinkle
+   individually so the sky doesn't read as a single static image. */
+.star-field-far,
+.star-field-near {
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+.star-field-far {
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 40% 70%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 65% 15%, rgba(255, 255, 255, 0.8), transparent 100%),
+    radial-gradient(1px 1px at 85% 55%, rgba(255, 255, 255, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 25% 90%, rgba(255, 255, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 55% 40%, rgba(255, 255, 255, 0.9), transparent 100%);
+  background-size: 220px 220px;
+  opacity: 0.55;
+}
+
+.star-field-near {
+  background-image:
+    radial-gradient(1.5px 1.5px at 15% 35%, rgba(255, 255, 255, 0.95), transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 80%, rgba(255, 255, 255, 0.85), transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 25%, rgba(255, 255, 255, 0.9), transparent 100%),
+    radial-gradient(1.5px 1.5px at 90% 65%, rgba(255, 255, 255, 0.8), transparent 100%);
+  background-size: 380px 380px;
+  opacity: 0.7;
+}
+
+/* Both endpoints of every keyframe below are non-zero/visible on purpose —
+   prefers-reduced-motion (above) collapses each animation to a single,
+   near-instant iteration that lands on the 100% keyframe, so a keyframe
+   that faded out would make the sky go dark for reduced-motion users
+   instead of just holding still. */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 3.6s ease-in-out infinite;
+}
+
+/* Shooting stars are the one exception: fading to invisible off-screen is
+   the correct reduced-motion resting state for something transient by
+   nature, not a broken one. */
+/* rotate() comes first so translateX() below moves along the STREAK's own
+   tilted axis, not the page's horizontal/vertical grid — transform
+   functions compose left-to-right, each operating in the coordinate space
+   the previous one established, so "rotate then translateX" is what makes
+   the star travel along the direction it's actually pointing. Getting this
+   order backwards (translate then rotate) is what made the star appear to
+   slide sideways independently of its own tilt. */
+@keyframes shooting-star {
+  0% { opacity: 0; transform: rotate(215deg) translateX(0); }
+  4% { opacity: 1; }
+  18% { opacity: 0; }
+  100% { opacity: 0; transform: rotate(215deg) translateX(-60vw); }
+}
+
+.animate-shooting-star {
+  animation-name: shooting-star;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+.animate-glow-breathe {
+  animation: glow-breathe 4.5s ease-in-out infinite;
+}
+
+/* Light-mode canopy — sun rays and drifting cloud bands. Glacially slow
+   (140s-240s) so the motion reads as weather, not as UI chrome asking for
+   attention; ends on a visible frame for the same reduced-motion reason as
+   the night-sky keyframes above. */
+.sun-rays {
+  background-image: repeating-conic-gradient(
+    from 0deg at 100% 0%,
+    rgba(255, 255, 255, 0.5) 0deg,
+    transparent 6deg,
+    transparent 18deg
+  );
+  animation: ray-shimmer 9s ease-in-out infinite;
+}
+
+@keyframes ray-shimmer {
+  0%, 100% { opacity: 0.32; }
+  50% { opacity: 0.5; }
+}
+
+.cloud-band-a,
+.cloud-band-b,
+.cloud-band-c {
+  background-repeat: repeat-x;
+  background-position: 0 50%;
+  opacity: 0.6;
+  filter: blur(1px);
+}
+
+.cloud-band-a {
+  background-image: radial-gradient(60px 20px at 15% 50%, rgba(255, 255, 255, 0.65), transparent 70%),
+    radial-gradient(90px 26px at 45% 50%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(70px 22px at 80% 50%, rgba(255, 255, 255, 0.6), transparent 70%);
+  background-size: 620px 100%;
+  animation: cloud-drift 190s ease-in-out infinite alternate;
+}
+
+.cloud-band-b {
+  background-image: radial-gradient(80px 24px at 25% 50%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(110px 30px at 60% 50%, rgba(255, 255, 255, 0.45), transparent 70%);
+  background-size: 780px 100%;
+  animation: cloud-drift 240s ease-in-out infinite alternate-reverse;
+}
+
+.cloud-band-c {
+  background-image: radial-gradient(50px 16px at 10% 50%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(65px 18px at 55% 50%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(55px 16px at 88% 50%, rgba(255, 255, 255, 0.5), transparent 70%);
+  background-size: 520px 100%;
+  animation: cloud-drift 140s ease-in-out infinite alternate;
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(-8%); }
+  100% { transform: translateX(8%); }
+}

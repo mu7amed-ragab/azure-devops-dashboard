@@ -1,0 +1,18 @@
+<service>
+  <id>azure-dashboard</id>
+  <name>Azure Dashboard</name>
+  <description>Personal Azure DevOps dashboard - Fastify server on 127.0.0.1:5174</description>
+  <executable>node</executable>
+  <arguments>server\index.js</arguments>
+  <workingdirectory>C:\apps\azure-devops-dashboard</workingdirectory>
+  <env name="NODE_ENV" value="production" />
+  <!-- A machine-wide NODE_OPTIONS value (unrelated to this app) isn't valid
+       on Node 16 via NODE_OPTIONS; clear it for this service only. -->
+  <env name="NODE_OPTIONS" value="" />
+  <onfailure action="restart" delay="10 sec" />
+  <log mode="roll-by-size">
+    <sizeThreshold>10240</sizeThreshold>
+    <keepFiles>3</keepFiles>
+  </log>
+  <logpath>C:\apps\azure-devops-dashboard\.logs</logpath>
+</service>

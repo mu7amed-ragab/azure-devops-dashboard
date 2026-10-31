@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Azure Dashboard</title>
+    <link rel="icon" id="favicon" />
+    <script>
+      // Applied before paint so there is no light-flash on a dark-mode reload,
+      // and so the tab icon matches the theme from the very first paint —
+      // see web/src/lib/favicon.ts for the theme-toggle-time equivalent.
+      // Dark is the deliberate default (not OS prefers-color-scheme) — the
+      // header sun/moon toggle is the way out, and the choice persists here.
+      // Also sets lang/dir before first paint using the same resolution as
+      // useLang.ts so there is no LTR→RTL flash on an Arabic reload.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme = stored || 'dark';
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          var accent = theme === 'dark' ? '818CF8' : '4F46E5';
+          var svg =
+            "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>" +
+            "<rect width='32' height='32' rx='7' fill='%23" + accent + "'/>" +
+            "<path d='M16 6 L25 26 L20 26 L16 16 L12 26 L7 26 Z' fill='%23ffffff'/>" +
+            "</svg>";
+          document.getElementById('favicon').setAttribute('href', 'data:image/svg+xml,' + svg);
+
+          // Resolve language: stored 'en'/'ar' wins outright (an explicit
+          // choice, including 'en', must never be second-guessed against the
+          // browser's languages) → else 'ar' if the browser prefers Arabic
+          // → else 'en'. Must match useLang.ts's getInitialLanguage() exactly
+          // — checking navigator.languages whenever storedLang === 'en' (not
+          // only when nothing is stored at all) previously let the browser's
+          // Arabic-leaning locale override someone who had explicitly picked
+          // English, permanently desyncing <html dir/lang> from the app's own
+          // language store since nothing re-applies this script after hydration.
+          var storedLang = localStorage.getItem('lang');
+          var lang;
+          if (storedLang === 'en' || storedLang === 'ar') {
+            lang = storedLang;
+          } else {
+            lang = 'en';
+            var languages = navigator.languages || [navigator.language];
+            for (var i = 0; i < languages.length; i++) {
+              if (languages[i].startsWith('ar')) {
+                lang = 'ar';
+                break;
+              }
+            }
+          }
+          document.documentElement.lang = lang;
+          document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

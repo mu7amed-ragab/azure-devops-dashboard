@@ -1,0 +1,13 @@
+node_modules/
+web/node_modules/
+web/dist/
+.cache/
+.demo/
+.data/
+/data/
+.env
+*.log
+.logs/
+.DS_Store
+deploy/azure-dashboard.exe
+tools/screenshots/

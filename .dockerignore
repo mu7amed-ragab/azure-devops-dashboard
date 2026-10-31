@@ -1,0 +1,12 @@
+node_modules
+web/node_modules
+web/dist
+.cache
+.logs
+.env
+.env.*
+!.env.example
+deploy
+.git
+.impeccable
+*.md
